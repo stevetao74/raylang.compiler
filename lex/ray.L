@@ -13,6 +13,9 @@
 %%
 
 "function"              {now.type=TOKEN_KEYWORD_FUNC;  return TOKEN_KEYWORD_FUNC;}
+"fn"                    {now.type=TOKEN_KEYWORD_FUNC;  return TOKEN_KEYWORD_FUNC;}
+"as"                    {now.type=TOKEN_KEYWORD_AS;    return TOKEN_KEYWORD_AS;}
+"get"                   {now.type=TOKEN_KEYWORD_GET;   return TOKEN_KEYWORD_GET;}
 "if"                    {now.type=TOKEN_KEYWORD_IF;    return TOKEN_KEYWORD_IF;}
 "else"                  {now.type=TOKEN_KEYWORD_ELSE;  return TOKEN_KEYWORD_ELSE;}
 "var"                   {now.type=TOKEN_KEYWORD_VAR;   return TOKEN_KEYWORD_VAR;}
@@ -36,6 +39,7 @@
 ":"                     {now.type=TOKEN_COL;          return TOKEN_COL;}
 "=="                    {now.type=TOKEN_EQU;          return TOKEN_EQU;}
 "!="                    {now.type=TOKEN_NOT_EQU;      return TOKEN_NOT_EQU;}
+"->"                    {now.type=TOKEN_ARROW;        return TOKEN_ARROW;}
 "<="                    {now.type=TOKEN_LTHAN_EQU;    return TOKEN_LTHAN_EQU;}
 ">="                    {now.type=TOKEN_MTHAN_EQU;    return TOKEN_MTHAN_EQU;}
 "="                     {now.type=TOKEN_SET;          return TOKEN_SET;}

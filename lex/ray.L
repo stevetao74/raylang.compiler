@@ -8,7 +8,8 @@
 %}
 
 %x COMMENT
-
+%x STRING
+%x SINGLE_STRING
 
 %%
 
@@ -33,8 +34,8 @@
 "]"                     {now.type=TOKEN_RSB;          return TOKEN_RSB;}
 "{"                     {now.type=TOKEN_LB;           return TOKEN_LB;}
 "}"                     {now.type=TOKEN_RB;           return TOKEN_RB;}
-"\""                    {now.type=TOKEN_DQ;           return TOKEN_DQ;}
-"\'"                    {now.type=TOKEN_SQ;           return TOKEN_SQ;}
+"\""                    {BEGIN STRING;}//{now.type=TOKEN_DQ;           return TOKEN_DQ;}
+"\'"                    {BEGIN SINGLE_STRING;}//{now.type=TOKEN_SQ;           return TOKEN_SQ;}
 ";"                     {now.type=TOKEN_SEM;          return TOKEN_SEM;}
 ":"                     {now.type=TOKEN_COL;          return TOKEN_COL;}
 "=="                    {now.type=TOKEN_EQU;          return TOKEN_EQU;}
@@ -53,6 +54,11 @@
 "/*"                    {BEGIN COMMENT;}
 <COMMENT>"*/"           {BEGIN INITIAL;}
 <COMMENT>.              {}
+<STRING>"\""            {BEGIN INITIAL;}
+<STRING>[^\"]*?         {now.type=TOKEN_STRING;now.value=yytext; return TOKEN_STRING;}
+<SINGLE_STRING>"\'"     {BEGIN INITIAL;}
+<SINGLE_STRING>"\n"     {now.type=TOKEN_ERROR;        return TOKEN_ERROR;}
+<SINGLE_STRING>[^\n & *\']*?      {now.type=TOKEN_STRING;now.value=yytext; return TOKEN_STRING;}
 
 [0-9]+                  {now.type=TOKEN_CONST_INT;now.value=yytext; return TOKEN_CONST_INT;}
 [0-9]+\.[0-9]+          {now.type=TOKEN_CONST_FLOAT;now.value=yytext; return TOKEN_CONST_FLOAT;}

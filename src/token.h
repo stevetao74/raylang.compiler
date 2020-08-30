@@ -12,19 +12,20 @@ using token_type = enum {
     TOKEN_RB=9,//}
     TOKEN_LSB=10,//[
     TOKEN_RSB=11,//]
-    TOKEN_DQ=12,//"
-    TOKEN_SQ=13,//'
-    TOKEN_SEM=14,//;
-    TOKEN_COL=15,//:
-    TOKEN_SET=16,//=
-    TOKEN_EQU=17,//==
-    TOKEN_LTHAN=18,//<
-    TOKEN_MTHAN=19,//>
-    TOKEN_LTHAN_EQU=20,//<=
-    TOKEN_MTHAN_EQU=21,//>=
-    TOKEN_NOT_EQU=22,//!=
-    TOKEN_NOT=23,//!
-    TOKEN_ARROW=24,//->
+    //TOKEN_DQ=12,//"
+    //TOKEN_SQ=13,//'
+    TOKEN_STRING=12, 
+    TOKEN_SEM=13,//;
+    TOKEN_COL=14,//:
+    TOKEN_SET=15,//=
+    TOKEN_EQU=16,//==
+    TOKEN_LTHAN=17,//<
+    TOKEN_MTHAN=18,//>
+    TOKEN_LTHAN_EQU=19,//<=
+    TOKEN_MTHAN_EQU=20,//>=
+    TOKEN_NOT_EQU=21,//!=
+    TOKEN_NOT=22,//!
+    TOKEN_ARROW=23,//->
 
     TOKEN_KEYWORD_FUNC=216,
     TOKEN_KEYWORD_IF=217,
@@ -35,7 +36,9 @@ using token_type = enum {
     TOKEN_KEYWORD_AS=222, 
     
     TOKEN_CONST_INT=100,
-    TOKEN_CONST_FLOAT=101
+    TOKEN_CONST_FLOAT=101, 
+    
+    TOKEN_ERROR=250
 };
 using token = struct
 {

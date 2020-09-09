@@ -60,6 +60,7 @@
 <SINGLE_STRING>"\n"     {now.type=TOKEN_ERROR;        return TOKEN_ERROR;}
 <SINGLE_STRING>[^\n & *\']*?      {now.type=TOKEN_STRING;now.value=yytext; return TOKEN_STRING;}
 
+
 [0-9]+                  {now.type=TOKEN_CONST_INT;now.value=yytext; return TOKEN_CONST_INT;}
 [0-9]+\.[0-9]+          {now.type=TOKEN_CONST_FLOAT;now.value=yytext; return TOKEN_CONST_FLOAT;}
 .                       {printf("Unknown token %s",yytext);}

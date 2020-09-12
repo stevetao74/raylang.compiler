@@ -17,6 +17,7 @@
 "fn"                    {now.type=TOKEN_KEYWORD_FUNC;  return TOKEN_KEYWORD_FUNC;}
 "as"                    {now.type=TOKEN_KEYWORD_AS;    return TOKEN_KEYWORD_AS;}
 "get"                   {now.type=TOKEN_KEYWORD_GET;   return TOKEN_KEYWORD_GET;}
+"put"                   {now.type=TOKEN_KEYWORD_PUT;   return TOKEN_KEYWORD_PUT;}
 "if"                    {now.type=TOKEN_KEYWORD_IF;    return TOKEN_KEYWORD_IF;}
 "else"                  {now.type=TOKEN_KEYWORD_ELSE;  return TOKEN_KEYWORD_ELSE;}
 "var"                   {now.type=TOKEN_KEYWORD_VAR;   return TOKEN_KEYWORD_VAR;}

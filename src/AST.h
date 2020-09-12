@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
-
+#include <cstring>
+#include "token.h"
 
 #define abstract
 #define extends :
@@ -17,7 +18,7 @@ enum class VariableType{
 };
 
 abstract class AST{
-    public virtual ~AST() = 0;
+    public virtual ~AST() = 0; //Make it abstract
 };
 
 class VariableAST extends AST{
@@ -31,6 +32,7 @@ class VariableAST extends AST{
     protected std::string name;
 };
 
+//===========constants==================
 class IntAST extends AST{
     
     public IntAST(const int64_t &value):value(value){}
@@ -39,6 +41,29 @@ class IntAST extends AST{
     protected int64_t value;
 };
 
+class FloatAST extends AST{
+    public FloatAST(const double &value):value(value){}
+    public virtual ~FloatAST()override{}
+
+    protected double value;
+};
+
+
+class StringAST extends AST{
+    public StringAST(const std::string &value):value(value){}
+    public virtual ~StringAST()override{}
+
+    protected std::string value;
+};
+
+class PointerAST extends AST{
+    public PointerAST(intptr_t* &value):value(value){}
+    public virtual ~PointerAST()override{}
+
+    protected intptr_t *value;
+};
+
+//================expressions
 class BinaryAST extends AST{
     
     public BinaryAST(const std::string &op,AST *lhs,AST *rhs): bin_operator(op) ,lhs(lhs) ,rhs(rhs){
@@ -50,6 +75,8 @@ class BinaryAST extends AST{
     protected AST *lhs,*rhs;
 
 };
+
+//For Fuction Defines
 struct Argument{
     VariableType type;
     std::string name;
@@ -74,6 +101,32 @@ class FunctionCallAST extends AST{
     protected std::vector<AST*> arguments;
 
 };
+
+
+//the core of ASTParser
+namespace global
+{
+    class ASTTokenParser{
+        protected static std::vector<token> tokens;
+        private static size_t current_number;
+
+        public static void SetTokenArray(std::vector<token>*);
+
+        public inline static void NextToken(){
+            current_number++;
+        }
+
+        public inline static token &GetCurrent(){
+            return tokens[current_number];
+        }
+
+        public static AST* BaseParser();
+        public static AST* float_const_parser(const token&);
+        public static AST* int_const_parser(const token&);
+        public static AST* string_const_parser(const token&);
+    }TokenParser;
+}; // namespace global
+
 
 #undef abstract
 #undef extends

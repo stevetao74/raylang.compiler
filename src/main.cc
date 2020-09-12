@@ -4,6 +4,11 @@
 #include <vector>
 #include <iostream>
 #include "token.h"
+#include "AST.h"
+
+std::vector<token> global::ASTTokenParser::tokens = {};
+size_t global::ASTTokenParser::current_number = 0;
+
 namespace
 {
     class Application
@@ -32,9 +37,7 @@ namespace
         {
             token_list->push_back(getToken());
         }
-        for(auto i:*token_list){
-            std::cout <<"<" << i.type <<"," << i.value << ">" << std::endl;
-        }
+        global::TokenParser.SetTokenArray(token_list);
         return 0;
     }
     Application::Application(){

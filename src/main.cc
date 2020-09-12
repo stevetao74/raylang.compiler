@@ -9,6 +9,7 @@
 std::vector<token> global::ASTTokenParser::tokens = {};
 size_t global::ASTTokenParser::current_number = 0;
 
+
 namespace
 {
     class Application
@@ -21,6 +22,8 @@ namespace
         std::vector<token> *token_list;
     };
 } // namespace
+
+
 int main(int argc, char *argv[])
 {
     Application app;

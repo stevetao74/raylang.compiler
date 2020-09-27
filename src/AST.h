@@ -2,6 +2,9 @@
 #include <string>
 #include <cstring>
 #include "token.h"
+#include <llvm/IR/Value.h>
+#include <llvm/CodeGen/Analysis.h>
+#include <llvm/CodeGen/ValueTypes.h>
 
 #define abstract
 #define extends :
@@ -19,6 +22,7 @@ enum class VariableType{
 
 abstract class AST{
     public virtual ~AST() = 0; //Make it abstract
+    public virtual llvm::Value *code_gen() = 0;
 };
 
 class VariableAST extends AST{

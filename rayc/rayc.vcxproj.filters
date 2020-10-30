@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="rayc.cc" />
+    <ClCompile Include="pch.cc" />
+    <ClCompile Include="ast\ast.cc">
+      <Filter>ast</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="lex">
+      <UniqueIdentifier>{f1e19ed8-f22c-479d-b4a4-c6a7ed6566b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parse">
+      <UniqueIdentifier>{04d2f824-7e64-4b38-ba09-e2b208c8d87f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ast">
+      <UniqueIdentifier>{1105f650-bfac-4009-aa76-714c0155b458}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="parse\ray.y">
+      <Filter>parse</Filter>
+    </None>
+    <None Include="lex\ray.l">
+      <Filter>lex</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="ast\ast.h">
+      <Filter>ast</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -13,6 +13,8 @@
 #pragma warning(disable:4146)
 #pragma warning(disable:4624)
 #pragma warning(disable:4141)
+#pragma warning(disable:4996)
+#pragma warning(disable:4244)
 
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/IR/Argument.h>

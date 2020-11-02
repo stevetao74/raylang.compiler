@@ -101,6 +101,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(ProjectDir)\..\llvm\Release\lib\LLVMX86Disassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86AsmParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86CodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCFGuard.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMGlobalISel.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSelectionDAG.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAsmPrinter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoDWARF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMScalarOpts.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAggressiveInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTransformUtils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitWriter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Desc.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCDisassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Utils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Info.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCJIT.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMExecutionEngine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTarget.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAnalysis.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMProfileData.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRuntimeDyld.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMObject.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTextAPI.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMC.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoCodeView.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoMSF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCore.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRemarks.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitstreamReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBinaryFormat.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSupport.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>set path=%path%;$(SolutionDIr)/utils/bin/
+cd $(ProjectDir)
+bison parser\ray.y -o parser\ray.cc --defines   -k -L c
+flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -138,6 +144,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(ProjectDir)\..\llvm\Release\lib\LLVMX86Disassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86AsmParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86CodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCFGuard.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMGlobalISel.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSelectionDAG.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAsmPrinter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoDWARF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMScalarOpts.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAggressiveInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTransformUtils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitWriter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Desc.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCDisassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Utils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Info.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCJIT.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMExecutionEngine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTarget.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAnalysis.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMProfileData.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRuntimeDyld.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMObject.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTextAPI.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMC.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoCodeView.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoMSF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCore.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRemarks.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitstreamReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBinaryFormat.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSupport.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>set path=%path%;$(SolutionDIr)/utils/bin/
+cd $(ProjectDir)
+bison parser\ray.y -o parser\ray.cc --defines   -k -L c
+flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -159,6 +171,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lexer\ray.cc" />
+    <ClCompile Include="parser\ray.cc" />
     <ClCompile Include="pch.cc" />
     <ClCompile Include="rayc.cc" />
   </ItemGroup>
@@ -168,6 +182,7 @@
     <ClInclude Include="ast\expressions\expressions.hpp" />
     <ClInclude Include="ast\interfaces\IBinaryExpr.hpp" />
     <ClInclude Include="ast\interfaces\interfaces.hpp" />
+    <ClInclude Include="parser\ray.hh" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

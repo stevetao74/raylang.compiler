@@ -8,6 +8,9 @@
 %union{
 	std::string *StrVal;
 }
-
+%start statement
 %%
+
+statement : ;
+
 %%

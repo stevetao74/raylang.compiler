@@ -3,6 +3,8 @@
   <ItemGroup>
     <ClCompile Include="rayc.cc" />
     <ClCompile Include="pch.cc" />
+    <ClCompile Include="lexer\ray.cc" />
+    <ClCompile Include="parser\ray.cc" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ast">
@@ -34,6 +36,7 @@
     </ClInclude>
     <ClInclude Include="ast\interfaces\IBinaryExpr.hpp" />
     <ClInclude Include="ast\expressions\BinaryExpr.h" />
+    <ClInclude Include="parser\ray.hh" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lexer\ray.l">

@@ -3,33 +3,44 @@
   <ItemGroup>
     <ClCompile Include="rayc.cc" />
     <ClCompile Include="pch.cc" />
-    <ClCompile Include="ast\ast.cc">
-      <Filter>ast</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="lex">
-      <UniqueIdentifier>{f1e19ed8-f22c-479d-b4a4-c6a7ed6566b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="parse">
-      <UniqueIdentifier>{04d2f824-7e64-4b38-ba09-e2b208c8d87f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ast">
       <UniqueIdentifier>{1105f650-bfac-4009-aa76-714c0155b458}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="parse\ray.y">
-      <Filter>parse</Filter>
-    </None>
-    <None Include="lex\ray.l">
-      <Filter>lex</Filter>
-    </None>
+    <Filter Include="ast\interfaces">
+      <UniqueIdentifier>{cbd410a0-a0a5-426e-8b01-0367055434f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ast\expressions">
+      <UniqueIdentifier>{917d033f-deba-4a2e-8931-2a421909e471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lexer">
+      <UniqueIdentifier>{f1e19ed8-f22c-479d-b4a4-c6a7ed6566b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parser">
+      <UniqueIdentifier>{04d2f824-7e64-4b38-ba09-e2b208c8d87f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="ast\ast.h">
       <Filter>ast</Filter>
     </ClInclude>
+    <ClInclude Include="ast\expressions\expressions.hpp">
+      <Filter>ast\expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\interfaces\interfaces.hpp">
+      <Filter>ast\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\interfaces\IBinaryExpr.hpp" />
+    <ClInclude Include="ast\expressions\BinaryExpr.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lexer\ray.l">
+      <Filter>lexer</Filter>
+    </None>
+    <None Include="parser\ray.y">
+      <Filter>parser</Filter>
+    </None>
   </ItemGroup>
 </Project>

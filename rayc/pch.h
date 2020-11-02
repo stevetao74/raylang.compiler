@@ -41,3 +41,14 @@
 
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
+
+namespace ray {
+	using std::vector;
+	using std::string;
+	using std::unique_ptr;
+	using std::unordered_set;
+	using std::unordered_map;
+	using std::make_pair;
+	using std::make_unique;
+	using std::move;
+};

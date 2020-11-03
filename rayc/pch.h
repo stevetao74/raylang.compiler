@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <locale>
 #include <cstring>
 #include <memory>
@@ -15,6 +16,7 @@
 #pragma warning(disable:4141)
 #pragma warning(disable:4996)
 #pragma warning(disable:4244)
+#pragma warning(disable:4005)
 
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/IR/Argument.h>

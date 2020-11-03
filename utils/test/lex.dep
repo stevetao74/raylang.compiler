@@ -1,1 +1,0 @@
-lex.o: lex.l yacc.h

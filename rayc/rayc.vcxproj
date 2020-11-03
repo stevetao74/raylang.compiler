@@ -54,6 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="..\win_flex_bison_custom_build.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -72,25 +73,27 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)\..\llvm\include;$(ProjectDir);$(VC_IncludePath);$(WindowsSdk_71A_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\..\utils\bin;$(ProjectDir)\..\llvm\include;$(ProjectDir);$(VC_IncludePath);$(WindowsSdk_71A_IncludePath)</IncludePath>
+    <ExecutablePath>$(SolutionDir)/utils/bin/;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)\..\llvm\include;$(ProjectDir);$(VC_IncludePath);$(WindowsSdk_71A_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\..\utils\bin;$(ProjectDir)\..\llvm\include;$(ProjectDir);$(VC_IncludePath);$(WindowsSdk_71A_IncludePath)</IncludePath>
+    <ExecutablePath>$(SolutionDir)/utils/bin/;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_VERSION__=201001L;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -102,11 +105,23 @@
       <AdditionalDependencies>$(ProjectDir)\..\llvm\Release\lib\LLVMX86Disassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86AsmParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86CodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCFGuard.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMGlobalISel.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSelectionDAG.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAsmPrinter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoDWARF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMScalarOpts.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAggressiveInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTransformUtils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitWriter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Desc.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCDisassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Utils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Info.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCJIT.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMExecutionEngine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTarget.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAnalysis.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMProfileData.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRuntimeDyld.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMObject.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTextAPI.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMC.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoCodeView.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoMSF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCore.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRemarks.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitstreamReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBinaryFormat.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSupport.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>set path=%path%;$(SolutionDIr)/utils/bin/
-cd $(ProjectDir)
-bison parser\ray.y -o parser\ray.cc --defines   -k -L c
-flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <Bison>
+      <OutputFile>$(ProjectDir)/parser/%(Filename).tab.cc</OutputFile>
+      <AdditionalOptions> -L c++ %(AdditionalOptions)</AdditionalOptions>
+    </Bison>
+    <Flex>
+      <OutputFile>$(ProjectDir)/lexer/%(Filename).flex.cc</OutputFile>
+    </Flex>
+    <Flex>
+      <BisonBridge>true</BisonBridge>
+    </Flex>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -125,17 +140,17 @@ flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__STDC_VERSION__=201001L;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,11 +160,23 @@ flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
       <AdditionalDependencies>$(ProjectDir)\..\llvm\Release\lib\LLVMX86Disassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86AsmParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86CodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCFGuard.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMGlobalISel.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSelectionDAG.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAsmPrinter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoDWARF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCodeGen.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMScalarOpts.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAggressiveInstCombine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTransformUtils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitWriter.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Desc.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCDisassembler.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Utils.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMX86Info.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCJIT.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMExecutionEngine.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTarget.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMAnalysis.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMProfileData.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRuntimeDyld.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMObject.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMTextAPI.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMCParser.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMMC.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoCodeView.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDebugInfoMSF.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMCore.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMRemarks.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBitstreamReader.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMBinaryFormat.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMSupport.lib;$(ProjectDir)\..\llvm\Release\lib\LLVMDemangle.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>set path=%path%;$(SolutionDIr)/utils/bin/
-cd $(ProjectDir)
-bison parser\ray.y -o parser\ray.cc --defines   -k -L c
-flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <Bison>
+      <OutputFile>%(Filename).tab.cc</OutputFile>
+      <AdditionalOptions> -L c++ %(AdditionalOptions)</AdditionalOptions>
+    </Bison>
+    <Flex>
+      <OutputFile>%(Filename).flex.cc</OutputFile>
+    </Flex>
+    <Flex>
+      <BisonBridge>true</BisonBridge>
+    </Flex>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -171,9 +198,18 @@ flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lexer\ray.cc" />
-    <ClCompile Include="parser\ray.cc" />
-    <ClCompile Include="pch.cc" />
+    <ClInclude Include="lexer\ray-lexer.flex.h">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClInclude>
+    <ClCompile Include="parser\ray-parser.tab.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="pch.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="rayc.cc" />
   </ItemGroup>
   <ItemGroup>
@@ -182,14 +218,25 @@ flex  --bison-bridge  --wincompat -o lexer\ray.cc lexer\ray.l</Command>
     <ClInclude Include="ast\expressions\expressions.hpp" />
     <ClInclude Include="ast\interfaces\IBinaryExpr.hpp" />
     <ClInclude Include="ast\interfaces\interfaces.hpp" />
-    <ClInclude Include="parser\ray.hh" />
+    <ClInclude Include="parser\ray-parser.tab.h" />
+    <ClInclude Include="parser\stack.hh" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lexer\ray.l" />
-    <None Include="parser\ray.y" />
+    <Bison Include="parser\ray-parser.y" />
+  </ItemGroup>
+  <ItemGroup>
+    <Flex Include="lexer\ray-lexer.l">
+      <BisonBridge Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</BisonBridge>
+      <BisonBridge Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</BisonBridge>
+      <Cpp Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</Cpp>
+      <Cpp Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</Cpp>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).flex.h</OutputFile>
+      <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).flex.h</OutputFile>
+    </Flex>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\win_flex_bison_custom_build.targets" />
   </ImportGroup>
 </Project>

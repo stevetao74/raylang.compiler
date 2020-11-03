@@ -1,6 +1,6 @@
-#line 1 "lexer\\ray.cc"
+#line 1 "ray-lexer.flex.h"
 
-#line 3 "lexer\\ray.cc"
+#line 3 "ray-lexer.flex.h"
 
 #define  YY_INT_ALIGNED short int
 
@@ -476,16 +476,18 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "lexer\\ray.l"
-#line 4 "lexer\\ray.l"
+#line 1 "ray-lexer.l"
+#line 2 "ray-lexer.l"
 	#include <pch.h>
+	#include <parser/ray-parser.tab.h>
+	typedef yy::parser::semantic_type YYSTYPE;
 
 	extern int yylineno;
 	extern char* yytext;
 
-	int yyerror(const char *s);
-#line 487 "lexer\\ray.cc"
-#line 488 "lexer\\ray.cc"
+	void yyerror(const char *s);
+#line 489 "ray-lexer.flex.h"
+#line 490 "ray-lexer.flex.h"
 
 #define INITIAL 0
 
@@ -709,9 +711,9 @@ YY_DECL
 		}
 
 	{
-#line 13 "lexer\\ray.l"
+#line 15 "ray-lexer.l"
 
-#line 714 "lexer\\ray.cc"
+#line 716 "ray-lexer.flex.h"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -780,10 +782,10 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 14 "lexer\\ray.l"
+#line 16 "ray-lexer.l"
 ECHO;
 	YY_BREAK
-#line 786 "lexer\\ray.cc"
+#line 788 "ray-lexer.flex.h"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1800,9 +1802,9 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 14 "lexer\\ray.l"
+#line 16 "ray-lexer.l"
 
 
-int yyerror(const char *s){
-	fprintf(stderr,"%s",s);
+void yyerror(const char *s){
+	std::cerr << s << std::endl;
 }

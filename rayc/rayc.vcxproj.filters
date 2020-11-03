@@ -3,8 +3,9 @@
   <ItemGroup>
     <ClCompile Include="rayc.cc" />
     <ClCompile Include="pch.cc" />
-    <ClCompile Include="lexer\ray.cc" />
-    <ClCompile Include="parser\ray.cc" />
+    <ClCompile Include="parser\ray-parser.tab.cc">
+      <Filter>parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ast">
@@ -36,14 +37,24 @@
     </ClInclude>
     <ClInclude Include="ast\interfaces\IBinaryExpr.hpp" />
     <ClInclude Include="ast\expressions\BinaryExpr.h" />
-    <ClInclude Include="parser\ray.hh" />
+    <ClInclude Include="parser\ray-parser.tab.h">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parser\stack.hh">
+      <Filter>parser</Filter>
+    </ClInclude>
+    <ClInclude Include="lexer\ray-lexer.flex.h">
+      <Filter>lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="lexer\ray.l">
-      <Filter>lexer</Filter>
-    </None>
-    <None Include="parser\ray.y">
+    <Bison Include="parser\ray-parser.y">
       <Filter>parser</Filter>
-    </None>
+    </Bison>
+  </ItemGroup>
+  <ItemGroup>
+    <Flex Include="lexer\ray-lexer.l">
+      <Filter>lexer</Filter>
+    </Flex>
   </ItemGroup>
 </Project>

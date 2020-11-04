@@ -11,12 +11,19 @@
 %option yylineno
 
 %%
+"fn"					{return tokens::TOKEN_FUNCTION;}
+"function"				{return tokens::TOKEN_FUNCTION;}
+"var"					{return tokens::TOKEN_VAR;}
 [a-zA-Z_][a-zA-Z_0-9]*	{return tokens::TOKEN_IDENTIFIER;}
 "+"						{return tokens::TOKEN_PLUS;}
 "-"						{return tokens::TOKEN_SUB;}
 "*"						{return tokens::TOKEN_MUL;}
 "/"						{return tokens::TOKEN_DIV;}
 "%"						{return tokens::TOKEN_MOD;}
+"("						{return tokens::TOKEN_LPAREN;}
+")"						{return tokens::TOKEN_RPAREN;}
+"{"						{return tokens::TOKEN_LBRACE;}
+"}"						{return tokens::TOKEN_RBRACE;}
 %%
 
 void yyerror(const char *s){

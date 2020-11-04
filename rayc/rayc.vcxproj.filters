@@ -6,6 +6,7 @@
     <ClCompile Include="parser\ray-parser.tab.cc">
       <Filter>parser</Filter>
     </ClCompile>
+    <ClCompile Include="ast\IDentifier.cc" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ast">
@@ -35,8 +36,6 @@
     <ClInclude Include="ast\interfaces\interfaces.hpp">
       <Filter>ast\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="ast\interfaces\IBinaryExpr.hpp" />
-    <ClInclude Include="ast\expressions\BinaryExpr.h" />
     <ClInclude Include="parser\ray-parser.tab.h">
       <Filter>parser</Filter>
     </ClInclude>
@@ -46,6 +45,13 @@
     <ClInclude Include="lexer\ray-lexer.flex.h">
       <Filter>lexer</Filter>
     </ClInclude>
+    <ClInclude Include="ast\interfaces\IBinaryExpr.hpp">
+      <Filter>ast\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\expressions\BinaryExpr.h">
+      <Filter>ast\expressions</Filter>
+    </ClInclude>
+    <ClInclude Include="ast\IDentifier.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Bison Include="parser\ray-parser.y">

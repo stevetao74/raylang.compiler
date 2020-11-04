@@ -5,6 +5,6 @@ namespace ray::ast {
 		virtual ~ASTBase(){}
 	};
 };
-
+#include "IDentifier.hpp"
 #include "./interfaces/interfaces.hpp"
 #include "./expressions/expressions.hpp"

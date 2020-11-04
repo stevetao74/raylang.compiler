@@ -45,7 +45,7 @@
 	extern int yylineno;
 	extern void yyerror(const char *);
 
-#line 49 "ray-parser.tab.cc"
+#line 49 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
 
 #include "ray-parser.tab.h"
@@ -123,7 +123,7 @@
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace yy {
-#line 127 "ray-parser.tab.cc"
+#line 127 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
   /// Build a parser object.
   parser::parser ()
@@ -570,8 +570,44 @@ namespace yy {
         {
           switch (yyn)
             {
+  case 2: // statement: expr
+#line 29 "ray-parser.y"
+     {;}
+#line 577 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+    break;
 
-#line 575 "ray-parser.tab.cc"
+  case 3: // expr: TOKEN_IDENTIFIER
+#line 34 "ray-parser.y"
+                      {printf("%s\n",yytext);}
+#line 583 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+    break;
+
+  case 4: // expr: expr TOKEN_MUL expr
+#line 35 "ray-parser.y"
+                        {;}
+#line 589 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+    break;
+
+  case 5: // expr: expr TOKEN_DIV expr
+#line 36 "ray-parser.y"
+                        {;}
+#line 595 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+    break;
+
+  case 6: // expr: expr TOKEN_PLUS expr
+#line 37 "ray-parser.y"
+                        {;}
+#line 601 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+    break;
+
+  case 7: // expr: expr TOKEN_SUB expr
+#line 38 "ray-parser.y"
+                        {;}
+#line 607 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+    break;
+
+
+#line 611 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
             default:
               break;
@@ -756,62 +792,65 @@ namespace yy {
 
 
 
-  const signed char parser::yypact_ninf_ = -1;
+  const signed char parser::yypact_ninf_ = -4;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const signed char
   parser::yypact_[] =
   {
-      -1,     0,    -1,    -1
+       0,    -4,     9,    -3,    -4,     0,     0,     0,     0,    -3,
+      -3,    -3,    -3
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       3,     0,     2,     1
+       0,     3,     0,     2,     1,     0,     0,     0,     0,     6,
+       7,     4,     5
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -1,    -1,    -1
+      -4,    -4,    -1
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-      -1,     1,     2
+      -1,     2,     3
   };
 
   const signed char
   parser::yytable_[] =
   {
-       3
+       5,     6,     7,     8,     9,    10,    11,    12,     1,     4
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       0
+       3,     4,     5,     6,     5,     6,     7,     8,     8,     0
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,     4,     5,     0
+       0,     8,    10,    11,     0,     3,     4,     5,     6,    11,
+      11,    11,    11
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,     3,     4,     5
+       0,     9,    10,    11,    11,    11,    11,    11
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     1,     0
+       0,     2,     1,     1,     3,     3,     3,     3
   };
 
 
@@ -821,8 +860,9 @@ namespace yy {
   const char*
   const parser::yytname_[] =
   {
-  "\"end of file\"", "error", "\"invalid token\"", "$accept", "statement",
-  "expr", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "TOKEN_PLUS",
+  "TOKEN_SUB", "TOKEN_MUL", "TOKEN_DIV", "TOKEN_MOD", "TOKEN_IDENTIFIER",
+  "$accept", "statement", "expr", YY_NULLPTR
   };
 #endif
 
@@ -831,7 +871,7 @@ namespace yy {
   const signed char
   parser::yyrline_[] =
   {
-       0,    17,    17,    18
+       0,    29,    29,    34,    35,    36,    37,    38
   };
 
   void
@@ -895,10 +935,11 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     1,     2
+       2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
+       5,     6,     7,     8
     };
     // Last valid token kind.
-    const int code_max = 257;
+    const int code_max = 263;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -909,9 +950,9 @@ namespace yy {
   }
 
 } // yy
-#line 913 "ray-parser.tab.cc"
+#line 954 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
-#line 19 "ray-parser.y"
+#line 40 "ray-parser.y"
 
 
 void yy::parser::error(const std::string &msg){

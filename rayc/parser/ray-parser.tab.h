@@ -185,7 +185,7 @@ namespace yy {
     /// Symbol semantic values.
     union semantic_type
     {
-#line 10 "ray-parser.y"
+#line 20 "ray-parser.y"
 
 	std::string *StrVal;
 
@@ -218,7 +218,13 @@ namespace yy {
         YYEMPTY = -2,
     YYEOF = 0,                     // "end of file"
     YYerror = 256,                 // error
-    YYUNDEF = 257                  // "invalid token"
+    YYUNDEF = 257,                 // "invalid token"
+    TOKEN_PLUS = 258,              // TOKEN_PLUS
+    TOKEN_SUB = 259,               // TOKEN_SUB
+    TOKEN_MUL = 260,               // TOKEN_MUL
+    TOKEN_DIV = 261,               // TOKEN_DIV
+    TOKEN_MOD = 262,               // TOKEN_MOD
+    TOKEN_IDENTIFIER = 263         // TOKEN_IDENTIFIER
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -235,14 +241,20 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 3, ///< Number of tokens.
+        YYNTOKENS = 9, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
-        S_YYACCEPT = 3,                          // $accept
-        S_statement = 4,                         // statement
-        S_expr = 5                               // expr
+        S_TOKEN_PLUS = 3,                        // TOKEN_PLUS
+        S_TOKEN_SUB = 4,                         // TOKEN_SUB
+        S_TOKEN_MUL = 5,                         // TOKEN_MUL
+        S_TOKEN_DIV = 6,                         // TOKEN_DIV
+        S_TOKEN_MOD = 7,                         // TOKEN_MOD
+        S_TOKEN_IDENTIFIER = 8,                  // TOKEN_IDENTIFIER
+        S_YYACCEPT = 9,                          // $accept
+        S_statement = 10,                        // statement
+        S_expr = 11                              // expr
       };
     };
 
@@ -722,9 +734,9 @@ namespace yy {
     /// Constants.
     enum
     {
-      yylast_ = 0,     ///< Last index in yytable_.
+      yylast_ = 9,     ///< Last index in yytable_.
       yynnts_ = 3,  ///< Number of nonterminal symbols.
-      yyfinal_ = 3 ///< Termination state number.
+      yyfinal_ = 4 ///< Termination state number.
     };
 
 
@@ -733,7 +745,7 @@ namespace yy {
 
 
 } // yy
-#line 737 "ray-parser.tab.h"
+#line 749 "ray-parser.tab.h"
 
 
 

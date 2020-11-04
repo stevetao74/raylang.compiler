@@ -54,7 +54,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-    <Import Project="..\win_flex_bison_custom_build.props" />
+    <Import Project="$(ProjectDir)\win_flex_bison_custom_build.props" />
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
@@ -168,11 +168,11 @@
       </Command>
     </CustomBuildStep>
     <Bison>
-      <OutputFile>%(Filename).tab.cc</OutputFile>
+      <OutputFile>$(ProjectDir)/parser/%(Filename).tab.cc</OutputFile>
       <AdditionalOptions> -L c++ %(AdditionalOptions)</AdditionalOptions>
     </Bison>
     <Flex>
-      <OutputFile>%(Filename).flex.cc</OutputFile>
+      <OutputFile>$(ProjectDir)/lexer/%(Filename).flex.cc</OutputFile>
     </Flex>
     <Flex>
       <BisonBridge>true</BisonBridge>
@@ -223,7 +223,9 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <Bison Include="parser\ray-parser.y" />
+    <Bison Include="parser\ray-parser.y">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">-Wother %(AdditionalOptions)</AdditionalOptions>
+    </Bison>
   </ItemGroup>
   <ItemGroup>
     <Flex Include="lexer\ray-lexer.l">
@@ -233,10 +235,11 @@
       <Cpp Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</Cpp>
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).flex.h</OutputFile>
       <OutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).flex.h</OutputFile>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </Flex>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\win_flex_bison_custom_build.targets" />
+    <Import Project="$(ProjectDir)\win_flex_bison_custom_build.targets" />
   </ImportGroup>
 </Project>

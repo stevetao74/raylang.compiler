@@ -220,6 +220,8 @@
     <ClInclude Include="ast\expressions\expressions.hpp" />
     <ClInclude Include="ast\interfaces\IBinaryExpr.hpp" />
     <ClInclude Include="ast\interfaces\interfaces.hpp" />
+    <ClInclude Include="parser\location.hh" />
+    <ClInclude Include="parser\position.hh" />
     <ClInclude Include="parser\ray-parser.tab.h" />
     <ClInclude Include="parser\stack.hh" />
     <ClInclude Include="pch.h" />
@@ -227,6 +229,8 @@
   <ItemGroup>
     <Bison Include="parser\ray-parser.y">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">-Wother %(AdditionalOptions)</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </Bison>
   </ItemGroup>
   <ItemGroup>

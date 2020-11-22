@@ -52,6 +52,8 @@
       <Filter>ast\expressions</Filter>
     </ClInclude>
     <ClInclude Include="ast\IDentifier.hpp" />
+    <ClInclude Include="parser\position.hh" />
+    <ClInclude Include="parser\location.hh" />
   </ItemGroup>
   <ItemGroup>
     <Bison Include="parser\ray-parser.y">

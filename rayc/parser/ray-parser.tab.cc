@@ -44,8 +44,11 @@
 	#include <ast/ast.h>
 	extern int yylineno;
 	extern void yyerror(const char *);
+	namespace yy {
+		using namespace ray::ast;
+	};
 
-#line 49 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+#line 52 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
 
 #include "ray-parser.tab.h"
@@ -75,6 +78,25 @@
 # endif
 #endif
 
+#define YYRHSLOC(Rhs, K) ((Rhs)[K].location)
+/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
+   If N is 0, then set CURRENT to the empty location which ends
+   the previous symbol: RHS[0] (always defined).  */
+
+# ifndef YYLLOC_DEFAULT
+#  define YYLLOC_DEFAULT(Current, Rhs, N)                               \
+    do                                                                  \
+      if (N)                                                            \
+        {                                                               \
+          (Current).begin  = YYRHSLOC (Rhs, 1).begin;                   \
+          (Current).end    = YYRHSLOC (Rhs, N).end;                     \
+        }                                                               \
+      else                                                              \
+        {                                                               \
+          (Current).begin = (Current).end = YYRHSLOC (Rhs, 0).end;      \
+        }                                                               \
+    while (false)
+# endif
 
 
 // Enable debugging if requested.
@@ -123,7 +145,7 @@
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 namespace yy {
-#line 127 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+#line 149 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
   /// Build a parser object.
   parser::parser ()
@@ -150,20 +172,23 @@ namespace yy {
   parser::basic_symbol<Base>::basic_symbol (const basic_symbol& that)
     : Base (that)
     , value (that.value)
+    , location (that.location)
   {}
 
 
   /// Constructor for valueless symbols.
   template <typename Base>
-  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t)
+  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, YY_MOVE_REF (location_type) l)
     : Base (t)
     , value ()
+    , location (l)
   {}
 
   template <typename Base>
-  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, YY_RVREF (semantic_type) v)
+  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, YY_RVREF (semantic_type) v, YY_RVREF (location_type) l)
     : Base (t)
     , value (YY_MOVE (v))
+    , location (YY_MOVE (l))
   {}
 
   template <typename Base>
@@ -186,6 +211,7 @@ namespace yy {
   {
     super_type::move (s);
     value = YY_MOVE (s.value);
+    location = YY_MOVE (s.location);
   }
 
   // by_kind.
@@ -274,7 +300,7 @@ namespace yy {
   {}
 
   parser::stack_symbol_type::stack_symbol_type (YY_RVREF (stack_symbol_type) that)
-    : super_type (YY_MOVE (that.state), YY_MOVE (that.value))
+    : super_type (YY_MOVE (that.state), YY_MOVE (that.value), YY_MOVE (that.location))
   {
 #if 201103L <= YY_CPLUSPLUS
     // that is emptied.
@@ -283,7 +309,7 @@ namespace yy {
   }
 
   parser::stack_symbol_type::stack_symbol_type (state_type s, YY_MOVE_REF (symbol_type) that)
-    : super_type (s, YY_MOVE (that.value))
+    : super_type (s, YY_MOVE (that.value), YY_MOVE (that.location))
   {
     // that is emptied.
     that.kind_ = symbol_kind::S_YYEMPTY;
@@ -295,6 +321,7 @@ namespace yy {
   {
     state = that.state;
     value = that.value;
+    location = that.location;
     return *this;
   }
 
@@ -303,6 +330,7 @@ namespace yy {
   {
     state = that.state;
     value = that.value;
+    location = that.location;
     // that is emptied.
     that.state = empty_state;
     return *this;
@@ -333,7 +361,8 @@ namespace yy {
       {
         symbol_kind_type yykind = yysym.kind ();
         yyo << (yykind < YYNTOKENS ? "token" : "nterm")
-            << ' ' << yysym.name () << " (";
+            << ' ' << yysym.name () << " ("
+            << yysym.location << ": ";
         YYUSE (yykind);
         yyo << ')';
       }
@@ -434,6 +463,9 @@ namespace yy {
     /// The lookahead symbol.
     symbol_type yyla;
 
+    /// The locations where the error started and ended.
+    stack_symbol_type yyerror_range[3];
+
     /// The return value of parse ().
     int yyresult;
 
@@ -482,7 +514,7 @@ namespace yy {
         try
 #endif // YY_EXCEPTIONS
           {
-            yyla.kind_ = yytranslate_ (yylex (&yyla.value));
+            yyla.kind_ = yytranslate_ (yylex (&yyla.value, &yyla.location));
           }
 #if YY_EXCEPTIONS
         catch (const syntax_error& yyexc)
@@ -561,6 +593,12 @@ namespace yy {
       else
         yylhs.value = yystack_[0].value;
 
+      // Default location.
+      {
+        stack_type::slice range (yystack_, yylen);
+        YYLLOC_DEFAULT (yylhs.location, range, yylen);
+        yyerror_range[1].location = yylhs.location;
+      }
 
       // Perform the reduction.
       YY_REDUCE_PRINT (yyn);
@@ -570,44 +608,20 @@ namespace yy {
         {
           switch (yyn)
             {
-  case 2: // statement: expr
-#line 29 "ray-parser.y"
-     {;}
-#line 577 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+  case 4: // function_def: TOKEN_FUNCTION TOKEN_IDENTIFIER TOKEN_LPAREN TOKEN_RPAREN
+#line 45 "ray-parser.y"
+                                                           {;}
+#line 615 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
     break;
 
-  case 3: // expr: TOKEN_IDENTIFIER
-#line 34 "ray-parser.y"
-                      {printf("%s\n",yytext);}
-#line 583 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
-    break;
-
-  case 4: // expr: expr TOKEN_MUL expr
-#line 35 "ray-parser.y"
-                        {;}
-#line 589 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
-    break;
-
-  case 5: // expr: expr TOKEN_DIV expr
-#line 36 "ray-parser.y"
-                        {;}
-#line 595 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
-    break;
-
-  case 6: // expr: expr TOKEN_PLUS expr
-#line 37 "ray-parser.y"
-                        {;}
-#line 601 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
-    break;
-
-  case 7: // expr: expr TOKEN_SUB expr
-#line 38 "ray-parser.y"
-                        {;}
-#line 607 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+  case 5: // var_def: TOKEN_VAR TOKEN_IDENTIFIER
+#line 57 "ray-parser.y"
+                             {;}
+#line 621 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
     break;
 
 
-#line 611 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+#line 625 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
             default:
               break;
@@ -640,10 +654,11 @@ namespace yy {
       {
         ++yynerrs_;
         std::string msg = YY_("syntax error");
-        error (YY_MOVE (msg));
+        error (yyla.location, YY_MOVE (msg));
       }
 
 
+    yyerror_range[1].location = yyla.location;
     if (yyerrstatus_ == 3)
       {
         /* If just tried and failed to reuse lookahead token after an
@@ -705,6 +720,7 @@ namespace yy {
         if (yystack_.size () == 1)
           YYABORT;
 
+        yyerror_range[1].location = yystack_[0].location;
         yy_destroy_ ("Error: popping", yystack_[0]);
         yypop_ ();
         YY_STACK_PRINT ();
@@ -712,6 +728,8 @@ namespace yy {
     {
       stack_symbol_type error_token;
 
+      yyerror_range[2].location = yyla.location;
+      YYLLOC_DEFAULT (error_token.location, yyerror_range, 2);
 
       // Shift the error token.
       error_token.state = state_type (yyn);
@@ -777,7 +795,7 @@ namespace yy {
   void
   parser::error (const syntax_error& yyexc)
   {
-    error (yyexc.what ());
+    error (yyexc.location, yyexc.what ());
   }
 
 #if YYDEBUG || 0
@@ -792,65 +810,65 @@ namespace yy {
 
 
 
-  const signed char parser::yypact_ninf_ = -4;
+  const signed char parser::yypact_ninf_ = -14;
 
   const signed char parser::yytable_ninf_ = -1;
 
   const signed char
   parser::yypact_[] =
   {
-       0,    -4,     9,    -3,    -4,     0,     0,     0,     0,    -3,
-      -3,    -3,    -3
+      -3,   -13,   -12,     4,   -14,   -14,    -6,   -14,   -14,    -5,
+     -14
   };
 
   const signed char
   parser::yydefact_[] =
   {
-       0,     3,     0,     2,     1,     0,     0,     0,     0,     6,
-       7,     4,     5
+       0,     0,     0,     0,     2,     3,     0,     5,     1,     0,
+       4
   };
 
   const signed char
   parser::yypgoto_[] =
   {
-      -4,    -4,    -1
+     -14,   -14,   -14,   -14
   };
 
   const signed char
   parser::yydefgoto_[] =
   {
-      -1,     2,     3
+      -1,     3,     4,     5
   };
 
   const signed char
   parser::yytable_[] =
   {
-       5,     6,     7,     8,     9,    10,    11,    12,     1,     4
+       1,     2,     6,     7,     8,     9,     0,    10
   };
 
   const signed char
   parser::yycheck_[] =
   {
-       3,     4,     5,     6,     5,     6,     7,     8,     8,     0
+       3,     4,    15,    15,     0,    11,    -1,    12
   };
 
   const signed char
   parser::yystos_[] =
   {
-       0,     8,    10,    11,     0,     3,     4,     5,     6,    11,
-      11,    11,    11
+       0,     3,     4,    17,    18,    19,    15,    15,     0,    11,
+      12
   };
 
   const signed char
   parser::yyr1_[] =
   {
-       0,     9,    10,    11,    11,    11,    11,    11
+       0,    16,    17,    17,    18,    19
   };
 
   const signed char
   parser::yyr2_[] =
   {
-       0,     2,     1,     1,     3,     3,     3,     3
+       0,     2,     1,     1,     4,     2
   };
 
 
@@ -860,9 +878,11 @@ namespace yy {
   const char*
   const parser::yytname_[] =
   {
-  "\"end of file\"", "error", "\"invalid token\"", "TOKEN_PLUS",
-  "TOKEN_SUB", "TOKEN_MUL", "TOKEN_DIV", "TOKEN_MOD", "TOKEN_IDENTIFIER",
-  "$accept", "statement", "expr", YY_NULLPTR
+  "\"end of file\"", "error", "\"invalid token\"", "TOKEN_FUNCTION",
+  "TOKEN_VAR", "TOKEN_PLUS", "TOKEN_SUB", "TOKEN_MUL", "TOKEN_DIV",
+  "TOKEN_MOD", "TOKEN_COLON", "TOKEN_LPAREN", "TOKEN_RPAREN",
+  "TOKEN_LBRACE", "TOKEN_RBRACE", "TOKEN_IDENTIFIER", "$accept",
+  "statement", "function_def", "var_def", YY_NULLPTR
   };
 #endif
 
@@ -871,7 +891,7 @@ namespace yy {
   const signed char
   parser::yyrline_[] =
   {
-       0,    29,    29,    34,    35,    36,    37,    38
+       0,    40,    40,    41,    45,    57
   };
 
   void
@@ -936,10 +956,11 @@ namespace yy {
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8
+       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
+      15
     };
     // Last valid token kind.
-    const int code_max = 263;
+    const int code_max = 270;
 
     if (t <= 0)
       return symbol_kind::S_YYEOF;
@@ -950,11 +971,11 @@ namespace yy {
   }
 
 } // yy
-#line 954 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
+#line 975 "G:\\Ray\\compiler\\rayc\\rayc\\/parser/ray-parser.tab.cc"
 
-#line 40 "ray-parser.y"
+#line 60 "ray-parser.y"
 
 
-void yy::parser::error(const std::string &msg){
+void yy::parser::error(const location_type& loc,const std::string &msg){
 	std::cerr << msg << std::endl;
 }

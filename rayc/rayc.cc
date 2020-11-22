@@ -1,4 +1,8 @@
 ﻿#include <pch.h>
+#include <ast/ast.h>
+namespace yy {
+	using namespace ray::ast;
+};
 #include <parser/ray-parser.tab.h>
 extern FILE *yyin, *yyout;
 namespace {

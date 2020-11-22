@@ -88,7 +88,7 @@
 #else
 # define YY_CONSTEXPR
 #endif
-
+# include "location.hh"
 
 
 #ifndef YY_ATTRIBUTE_PURE
@@ -185,29 +185,36 @@ namespace yy {
     /// Symbol semantic values.
     union semantic_type
     {
-#line 20 "ray-parser.y"
+#line 30 "ray-parser.y"
 
 	std::string *StrVal;
+	yy::ExpressionBase *expr;
 
-#line 193 "ray-parser.tab.h"
+#line 194 "ray-parser.tab.h"
 
     };
 #else
     typedef YYSTYPE semantic_type;
 #endif
+    /// Symbol locations.
+    typedef location location_type;
 
     /// Syntax errors thrown from user actions.
     struct syntax_error : std::runtime_error
     {
-      syntax_error (const std::string& m)
+      syntax_error (const location_type& l, const std::string& m)
         : std::runtime_error (m)
+        , location (l)
       {}
 
       syntax_error (const syntax_error& s)
         : std::runtime_error (s.what ())
+        , location (s.location)
       {}
 
       ~syntax_error () YY_NOEXCEPT YY_NOTHROW;
+
+      location_type location;
     };
 
     /// Token kinds.
@@ -219,12 +226,19 @@ namespace yy {
     YYEOF = 0,                     // "end of file"
     YYerror = 256,                 // error
     YYUNDEF = 257,                 // "invalid token"
-    TOKEN_PLUS = 258,              // TOKEN_PLUS
-    TOKEN_SUB = 259,               // TOKEN_SUB
-    TOKEN_MUL = 260,               // TOKEN_MUL
-    TOKEN_DIV = 261,               // TOKEN_DIV
-    TOKEN_MOD = 262,               // TOKEN_MOD
-    TOKEN_IDENTIFIER = 263         // TOKEN_IDENTIFIER
+    TOKEN_FUNCTION = 258,          // TOKEN_FUNCTION
+    TOKEN_VAR = 259,               // TOKEN_VAR
+    TOKEN_PLUS = 260,              // TOKEN_PLUS
+    TOKEN_SUB = 261,               // TOKEN_SUB
+    TOKEN_MUL = 262,               // TOKEN_MUL
+    TOKEN_DIV = 263,               // TOKEN_DIV
+    TOKEN_MOD = 264,               // TOKEN_MOD
+    TOKEN_COLON = 265,             // TOKEN_COLON
+    TOKEN_LPAREN = 266,            // TOKEN_LPAREN
+    TOKEN_RPAREN = 267,            // TOKEN_RPAREN
+    TOKEN_LBRACE = 268,            // TOKEN_LBRACE
+    TOKEN_RBRACE = 269,            // TOKEN_RBRACE
+    TOKEN_IDENTIFIER = 270         // TOKEN_IDENTIFIER
       };
       /// Backward compatibility alias (Bison 3.6).
       typedef token_kind_type yytokentype;
@@ -241,20 +255,28 @@ namespace yy {
     {
       enum symbol_kind_type
       {
-        YYNTOKENS = 9, ///< Number of tokens.
+        YYNTOKENS = 16, ///< Number of tokens.
         S_YYEMPTY = -2,
         S_YYEOF = 0,                             // "end of file"
         S_YYerror = 1,                           // error
         S_YYUNDEF = 2,                           // "invalid token"
-        S_TOKEN_PLUS = 3,                        // TOKEN_PLUS
-        S_TOKEN_SUB = 4,                         // TOKEN_SUB
-        S_TOKEN_MUL = 5,                         // TOKEN_MUL
-        S_TOKEN_DIV = 6,                         // TOKEN_DIV
-        S_TOKEN_MOD = 7,                         // TOKEN_MOD
-        S_TOKEN_IDENTIFIER = 8,                  // TOKEN_IDENTIFIER
-        S_YYACCEPT = 9,                          // $accept
-        S_statement = 10,                        // statement
-        S_expr = 11                              // expr
+        S_TOKEN_FUNCTION = 3,                    // TOKEN_FUNCTION
+        S_TOKEN_VAR = 4,                         // TOKEN_VAR
+        S_TOKEN_PLUS = 5,                        // TOKEN_PLUS
+        S_TOKEN_SUB = 6,                         // TOKEN_SUB
+        S_TOKEN_MUL = 7,                         // TOKEN_MUL
+        S_TOKEN_DIV = 8,                         // TOKEN_DIV
+        S_TOKEN_MOD = 9,                         // TOKEN_MOD
+        S_TOKEN_COLON = 10,                      // TOKEN_COLON
+        S_TOKEN_LPAREN = 11,                     // TOKEN_LPAREN
+        S_TOKEN_RPAREN = 12,                     // TOKEN_RPAREN
+        S_TOKEN_LBRACE = 13,                     // TOKEN_LBRACE
+        S_TOKEN_RBRACE = 14,                     // TOKEN_RBRACE
+        S_TOKEN_IDENTIFIER = 15,                 // TOKEN_IDENTIFIER
+        S_YYACCEPT = 16,                         // $accept
+        S_statement = 17,                        // statement
+        S_function_def = 18,                     // function_def
+        S_var_def = 19                           // var_def
       };
     };
 
@@ -269,7 +291,7 @@ namespace yy {
     /// Expects its Base type to provide access to the symbol kind
     /// via kind ().
     ///
-    /// Provide access to semantic value.
+    /// Provide access to semantic value and location.
     template <typename Base>
     struct basic_symbol : Base
     {
@@ -279,6 +301,7 @@ namespace yy {
       /// Default constructor.
       basic_symbol ()
         : value ()
+        , location ()
       {}
 
 #if 201103L <= YY_CPLUSPLUS
@@ -286,17 +309,20 @@ namespace yy {
       basic_symbol (basic_symbol&& that)
         : Base (std::move (that))
         , value (std::move (that.value))
+        , location (std::move (that.location))
       {}
 #endif
 
       /// Copy constructor.
       basic_symbol (const basic_symbol& that);
       /// Constructor for valueless symbols.
-      basic_symbol (typename Base::kind_type t);
+      basic_symbol (typename Base::kind_type t,
+                    YY_MOVE_REF (location_type) l);
 
       /// Constructor for symbols with semantic value.
       basic_symbol (typename Base::kind_type t,
-                    YY_RVREF (semantic_type) v);
+                    YY_RVREF (semantic_type) v,
+                    YY_RVREF (location_type) l);
 
       /// Destroy the symbol.
       ~basic_symbol ()
@@ -330,6 +356,9 @@ namespace yy {
 
       /// The semantic value.
       semantic_type value;
+
+      /// The location.
+      location_type location;
 
     private:
 #if YY_CPLUSPLUS < 201103L
@@ -417,8 +446,9 @@ namespace yy {
 #endif
 
     /// Report a syntax error.
+    /// \param loc    where the syntax error is found.
     /// \param msg    a description of the syntax error.
-    virtual void error (const std::string& msg);
+    virtual void error (const location_type& loc, const std::string& msg);
 
     /// Report a syntax error.
     void error (const syntax_error& err);
@@ -734,9 +764,9 @@ namespace yy {
     /// Constants.
     enum
     {
-      yylast_ = 9,     ///< Last index in yytable_.
-      yynnts_ = 3,  ///< Number of nonterminal symbols.
-      yyfinal_ = 4 ///< Termination state number.
+      yylast_ = 7,     ///< Last index in yytable_.
+      yynnts_ = 4,  ///< Number of nonterminal symbols.
+      yyfinal_ = 8 ///< Termination state number.
     };
 
 
@@ -745,7 +775,7 @@ namespace yy {
 
 
 } // yy
-#line 749 "ray-parser.tab.h"
+#line 779 "ray-parser.tab.h"
 
 
 
